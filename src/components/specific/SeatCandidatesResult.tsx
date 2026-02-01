@@ -42,7 +42,7 @@ export default function SeatCandidatesResult() {
       })
       .catch((err) => {
         if (!cancelled) {
-          setError("তথ্য লোড হয়নি। আবার চেষ্টা করুন।");
+          setError("প্রার্থী তালিকা লোড হয়নি। আবার চেষ্টা করুন।");
           setCandidatesData(null);
         }
       })
@@ -71,8 +71,8 @@ export default function SeatCandidatesResult() {
 
   if (loading) {
     return (
-      <section ref={sectionRef} className="container mx-auto mt-2 px-4 lg:mt-0">
-        <div className="rounded-2xl bg-white p-8 text-center">
+      <section ref={sectionRef} className="container mx-auto mt-4 px-4 lg:mt-6">
+        <div className="rounded-2xl bg-white border border-gray-200 p-12 lg:p-16 min-h-[200px] lg:min-h-[260px] flex items-center justify-center text-center">
           <p className="text-gray-600">প্রার্থী তালিকা লোড হচ্ছে...</p>
         </div>
       </section>
@@ -81,8 +81,8 @@ export default function SeatCandidatesResult() {
 
   if (error) {
     return (
-      <section ref={sectionRef} className="container mx-auto mt-4 px-4">
-        <div className="rounded-2xl bg-white p-8 text-center">
+      <section ref={sectionRef} className="container mx-auto mt-4 px-4 lg:mt-6">
+        <div className="rounded-2xl bg-white border border-gray-200 p-12 lg:p-16 min-h-[200px] lg:min-h-[260px] flex items-center justify-center text-center">
           <p className="text-gray-600">{error}</p>
         </div>
       </section>
