@@ -71,7 +71,7 @@ export default function SeatCandidatesResult() {
 
   if (loading) {
     return (
-      <section ref={sectionRef} className="container mx-auto mt-2 px-4 lg:mt-4">
+      <section ref={sectionRef} className="container mx-auto mt-2 px-4 lg:mt-0">
         <div className="rounded-2xl bg-white p-8 text-center">
           <p className="text-gray-600">প্রার্থী তালিকা লোড হচ্ছে...</p>
         </div>
@@ -93,119 +93,117 @@ export default function SeatCandidatesResult() {
 
   return (
     <section ref={sectionRef} className="container mx-auto mt-2 px-4 lg:mt-4">
-      <div className="rounded-2xl bg-white overflow-hidden">
+      <div className="rounded-2xl bg-white border border-gray-200 overflow-hidden">
         <SectionTitle>
           {selectedSeat.seatName} – পছন্দের প্রার্থীকে ভোট দিন
         </SectionTitle>
-        <div className="lg:px-6 px-4 pb-4 lg:pb-6">
-          {candidates.length === 0 ? (
-            <p className="text-center py-8 text-gray-500">
-              কোন প্রার্থী পাওয়া যায়নি
-            </p>
-          ) : (
-            <div className="grid grid-cols-1 gap-4">
-              {candidates.map((c) => (
-                <div
-                  key={c.candidateId}
-                  className="grid grid-cols-1 sm:grid-cols-[auto_1fr_180px_auto] lg:grid-cols-[auto_1fr_220px_auto] gap-4 rounded-xl bg-white shadow-sm p-4 sm:p-5 items-center"
-                >
-                  {/* Col 1: image only */}
-                  <div className="w-full sm:w-28 lg:w-36 aspect-square sm:aspect-auto sm:h-[120px] bg-gray-100 rounded-lg overflow-hidden justify-self-center sm:justify-self-start">
-                    <Image
-                      className="w-full h-full object-cover"
-                      src={c.candidateImage}
-                      width={144}
-                      height={120}
-                      alt={`${c.candidateName} এর ছবি`}
-                      unoptimized={true}
-                    />
-                  </div>
+        {candidates.length === 0 ? (
+          <div className="px-4 pb-6 pt-0 text-center">
+            <p className="text-gray-500 py-8">কোন প্রার্থী পাওয়া যায়নি</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 gap-6 px-4 pb-6">
+            {candidates.map((c) => (
+              <div
+                key={c.candidateId}
+                className="grid grid-cols-1 sm:grid-cols-[auto_1fr_180px_auto] lg:grid-cols-[auto_1fr_220px_auto] gap-4 rounded-xl bg-gray-50/50 border border-gray-200 p-4 sm:p-5 items-center"
+              >
+                {/* Col 1: image only */}
+                <div className="w-full sm:w-28 lg:w-36 aspect-square sm:aspect-auto sm:h-[120px] bg-gray-100 rounded-lg overflow-hidden justify-self-center sm:justify-self-start">
+                  <Image
+                    className="w-full h-full object-cover"
+                    src={c.candidateImage}
+                    width={144}
+                    height={120}
+                    alt={`${c.candidateName} এর ছবি`}
+                    unoptimized={true}
+                  />
+                </div>
 
-                  {/* Col 2: seat info, name, party, symbol name */}
-                  <div className="space-y-1 min-w-0">
-                    <p className="text-xs text-gray-600">
-                      {selectedSeat.seatName} · আসন নং{" "}
-                      {toBengaliDigits(selectedSeat.seatNo)}
-                    </p>
-                    <h3 className="text-lg font-bold text-PurpleDark">
-                      {c.candidateName}
-                    </h3>
+                {/* Col 2: seat info, name, party, symbol name */}
+                <div className="space-y-1 min-w-0">
+                  <p className="text-xs text-gray-600">
+                    {selectedSeat.seatName} · আসন নং{" "}
+                    {toBengaliDigits(selectedSeat.seatNo)}
+                  </p>
+                  <h3 className="text-lg font-bold text-PurpleDark">
+                    {c.candidateName}
+                  </h3>
+                  <p className="text-sm text-gray-700">
+                    <span className="font-semibold text-gray-700">
+                      দলের নাম:
+                    </span>{" "}
+                    {c.partyName}
+                  </p>
+                  {c.partySymbol ? (
                     <p className="text-sm text-gray-700">
                       <span className="font-semibold text-gray-700">
-                        দলের নাম:
+                        প্রতীক:
                       </span>{" "}
-                      {c.partyName}
+                      {c.partySymbol}
                     </p>
-                    {c.partySymbol ? (
-                      <p className="text-sm text-gray-700">
-                        <span className="font-semibold text-gray-700">
-                          প্রতীক:
-                        </span>{" "}
-                        {c.partySymbol}
-                      </p>
-                    ) : null}
-                  </div>
+                  ) : null}
+                </div>
 
-                  {/* Col 3: vote result – symbol left, progress bar + count + % right */}
-                  <div className="flex items-stretch gap-3 bg-gray-50 rounded-lg p-3 sm:p-4 min-w-0">
-                    <div className="w-10 h-10 shrink-0 rounded-lg bg-white flex items-center justify-center overflow-hidden border border-gray-200 self-center">
-                      {c.partyLogo ? (
-                        <Image
-                          className="w-full h-full object-contain p-1"
-                          src={c.partyLogo}
-                          width={40}
-                          height={40}
-                          alt={c.partySymbol ?? "প্রতীক"}
-                          unoptimized={true}
-                        />
-                      ) : (
-                        <span className="text-xs text-gray-400">প্রতীক</span>
-                      )}
-                    </div>
-                    <div className="flex-1 min-w-0 space-y-1.5">
-                      <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide">
-                        ফলাফল
-                      </p>
-                      <div className="flex justify-between text-sm">
-                        <span className="text-gray-600">
-                          {typeof c.votesReceived === "number"
-                            ? c.votesReceived.toLocaleString("bn-BD")
-                            : "—"}
-                        </span>
-                        <span className="font-semibold text-gray-700">
-                          {typeof c.votePercentage === "number"
-                            ? `${c.votePercentage.toFixed(1)}%`
-                            : "—"}
-                        </span>
-                      </div>
-                      <div className="h-2.5 w-full bg-gray-200 rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-PurpleDark rounded-full transition-all duration-500"
-                          style={{
-                            width: `${Math.min(
-                              100,
-                              Math.max(0, c.votePercentage ?? 0)
-                            )}%`,
-                          }}
-                        />
-                      </div>
-                    </div>
+                {/* Col 3: vote result – symbol left, progress bar + count + % right */}
+                <div className="flex items-stretch gap-3 rounded-xl border-2 border-PurpleDark/20 bg-PurpleLight/50 p-4 sm:p-5 min-w-0">
+                  <div className="w-12 h-12 shrink-0 rounded-xl bg-white flex items-center justify-center overflow-hidden border-2 border-PurpleDark/30 shadow-sm self-center">
+                    {c.partyLogo ? (
+                      <Image
+                        className="w-full h-full object-contain p-1"
+                        src={c.partyLogo}
+                        width={48}
+                        height={48}
+                        alt={c.partySymbol ?? "প্রতীক"}
+                        unoptimized={true}
+                      />
+                    ) : (
+                      <span className="text-xs text-gray-400">প্রতীক</span>
+                    )}
                   </div>
-
-                  {/* Col 4: vote button */}
-                  <div className="flex justify-center sm:justify-end">
-                    <button
-                      type="button"
-                      className="px-5 py-2.5 bg-PurpleDark hover:bg-red-700 text-white font-medium rounded-lg transition-colors whitespace-nowrap"
-                    >
-                      ভোট দিন
-                    </button>
+                  <div className="flex-1 min-w-0 space-y-2">
+                    <p className="text-xs font-bold text-PurpleDark uppercase tracking-wide">
+                      ফলাফল
+                    </p>
+                    <div className="flex justify-between text-sm font-medium">
+                      <span className="text-gray-700">
+                        {typeof c.votesReceived === "number"
+                          ? c.votesReceived.toLocaleString("bn-BD")
+                          : "—"}
+                      </span>
+                      <span className="font-bold text-PurpleDark">
+                        {typeof c.votePercentage === "number"
+                          ? `${c.votePercentage.toFixed(1)}%`
+                          : "—"}
+                      </span>
+                    </div>
+                    <div className="h-3 w-full bg-gray-200 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-PurpleDark rounded-full transition-all duration-500"
+                        style={{
+                          width: `${Math.min(
+                            100,
+                            Math.max(0, c.votePercentage ?? 0)
+                          )}%`,
+                        }}
+                      />
+                    </div>
                   </div>
                 </div>
-              ))}
-            </div>
-          )}
-        </div>
+
+                {/* Col 4: vote button */}
+                <div className="flex justify-center sm:justify-end">
+                  <button
+                    type="button"
+                    className="px-5 py-2.5 bg-PurpleDark hover:bg-red-700 text-white font-medium rounded-lg transition-colors whitespace-nowrap"
+                  >
+                    ভোট দিন
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

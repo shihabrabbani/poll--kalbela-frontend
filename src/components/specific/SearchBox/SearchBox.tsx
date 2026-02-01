@@ -6,7 +6,6 @@ import { IoSearch } from "react-icons/io5";
 import districtList from "@/assets/data/districtList";
 import seatList from "@/assets/data/seatList";
 import SearchableSelect from "@/components/common/SearchableSelect";
-import styles from "./SearchBox.module.css";
 import { useSelectedSeat } from "@/contexts/SelectedSeatContext";
 
 const EMPTY = "all";
@@ -118,60 +117,59 @@ export default function SearchBox() {
   };
 
   return (
-    <section className="lg:-translate-y-1/2 -translate-y-9">
+    <section className="mt-6 lg:mt-8">
       <div className="container mx-auto">
-        <div className="bg-white rounded-2xl p-4">
-          <div className={styles.gradientBorder}>
-            <div className={`${styles.gradientBorderInner} p-3`}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
-                <div className="sm:col-span-1">
-                  {/* <label className="block text-sm font-medium text-gray-700 mb-1">
+        <div className="bg-white rounded-2xl border border-gray-300 py-8 p-4">
+          <p className="text-left text-gray-800 text-lg lg:text-xl font-bold mb-4 lg:mb-5">
+            পছন্দের প্রার্থীকে ভোট দিতে আসন নির্বাচন করুন
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+            <div className="sm:col-span-1">
+              {/* <label className="block text-sm font-medium text-gray-700 mb-1">
                 বিভাগ
               </label> */}
-                  <SearchableSelect
-                    options={divisionOptions}
-                    value={divisionValue}
-                    onChange={onDivisionChange}
-                    placeholder="বিভাগ নির্বাচন করুন"
-                    className="w-full"
-                  />
-                </div>
-                <div className="sm:col-span-1">
-                  {/* <label className="block text-sm font-medium text-gray-700 mb-1">
+              <SearchableSelect
+                options={divisionOptions}
+                value={divisionValue}
+                onChange={onDivisionChange}
+                placeholder="বিভাগ নির্বাচন করুন"
+                className="w-full"
+              />
+            </div>
+            <div className="sm:col-span-1">
+              {/* <label className="block text-sm font-medium text-gray-700 mb-1">
                 জেলা
               </label> */}
-                  <SearchableSelect
-                    options={districtOptions}
-                    value={districtValue}
-                    onChange={onDistrictChange}
-                    placeholder="জেলা নির্বাচন করুন"
-                    className="w-full"
-                  />
-                </div>
-                <div className="sm:col-span-2 lg:col-span-1 flex items-end gap-2">
-                  <div className="flex-1">
-                    {/* <label className="block text-sm font-medium text-gray-700 mb-1">
+              <SearchableSelect
+                options={districtOptions}
+                value={districtValue}
+                onChange={onDistrictChange}
+                placeholder="জেলা নির্বাচন করুন"
+                className="w-full"
+              />
+            </div>
+            <div className="sm:col-span-2 lg:col-span-1 flex items-end gap-2">
+              <div className="flex-1">
+                {/* <label className="block text-sm font-medium text-gray-700 mb-1">
                   আসন
                 </label> */}
-                    <SearchableSelect
-                      options={seatOptions}
-                      value={seatValue}
-                      onChange={onSeatChange}
-                      placeholder="আসন নির্বাচন করুন"
-                      className="w-full"
-                    />
-                  </div>
-                  <button
-                    onClick={handleSearch}
-                    className="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-PurpleDark hover:bg-red-700 text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                    disabled={seatValue === EMPTY}
-                    title="খুঁজুন"
-                  >
-                    <IoSearch size={18} />
-                    খুঁজুন
-                  </button>
-                </div>
+                <SearchableSelect
+                  options={seatOptions}
+                  value={seatValue}
+                  onChange={onSeatChange}
+                  placeholder="আসন নির্বাচন করুন"
+                  className="w-full"
+                />
               </div>
+              <button
+                onClick={handleSearch}
+                className="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-PurpleDark hover:bg-red-700 text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={seatValue === EMPTY}
+                title="খুঁজুন"
+              >
+                <IoSearch size={18} />
+                খুঁজুন
+              </button>
             </div>
           </div>
         </div>
