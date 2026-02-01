@@ -2,7 +2,7 @@
 
 import React, { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { FaArrowRightLong } from "react-icons/fa6";
+import { IoSearch } from "react-icons/io5";
 import districtList from "@/assets/data/districtList";
 import seatList from "@/assets/data/seatList";
 import SearchableSelect from "@/components/common/SearchableSelect";
@@ -163,11 +163,12 @@ export default function SearchBox() {
                   </div>
                   <button
                     onClick={handleSearch}
-                    className="inline-flex items-center justify-center px-4 py-2.5 bg-PurpleDark hover:bg-red-700 text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-PurpleDark hover:bg-red-700 text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     disabled={seatValue === EMPTY}
-                    title="Search"
+                    title="খুঁজুন"
                   >
-                    <FaArrowRightLong size={20} />
+                    <IoSearch size={18} />
+                    খুঁজুন
                   </button>
                 </div>
               </div>

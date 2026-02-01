@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useSelectedSeat } from "@/contexts/SelectedSeatContext";
 import SectionTitle from "@/components/common/SectionTitle";
 import toBengaliDigits from "@/assets/lib/toBanglaDigits";
+import EmptyCandidateMessage from "@/components/specific/EmptyCandidateMessage";
 import type { ElectionSeatResponse, Seat } from "@/types";
 
 export default function SeatCandidatesResult() {
@@ -66,11 +67,11 @@ export default function SeatCandidatesResult() {
     }
   }, [selectedSeat, candidatesData, error, loading]);
 
-  if (!selectedSeat) return null;
+  if (!selectedSeat) return <EmptyCandidateMessage />;
 
   if (loading) {
     return (
-      <section ref={sectionRef} className="container mx-auto mt-8 px-4">
+      <section ref={sectionRef} className="container mx-auto mt-2 px-4 lg:mt-4">
         <div className="rounded-2xl bg-white p-8 text-center">
           <p className="text-gray-600">প্রার্থী তালিকা লোড হচ্ছে...</p>
         </div>
@@ -91,7 +92,7 @@ export default function SeatCandidatesResult() {
   const candidates = candidatesData?.candidates ?? [];
 
   return (
-    <section ref={sectionRef} className="container mx-auto mt-4 px-4 lg:mt-10">
+    <section ref={sectionRef} className="container mx-auto mt-2 px-4 lg:mt-4">
       <div className="rounded-2xl bg-white overflow-hidden">
         <SectionTitle>
           {selectedSeat.seatName} – পছন্দের প্রার্থীকে ভোট দিন
