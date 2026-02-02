@@ -3,6 +3,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import axios from "axios";
+import clsx from "clsx";
 import { useSelectedSeat } from "@/contexts/SelectedSeatContext";
 import SectionTitle from "@/components/common/SectionTitle";
 import toBengaliDigits from "@/assets/lib/toBanglaDigits";
@@ -185,7 +186,12 @@ export default function SeatCandidatesResult() {
             {candidates.map((c) => (
               <div
                 key={c.candidateId}
-                className="grid grid-cols-1 sm:grid-cols-[auto_1fr_180px_auto] lg:grid-cols-[auto_1fr_220px_auto] gap-4 rounded-xl bg-gray-50/50 border border-gray-200 p-4 sm:p-5 items-center"
+                className={clsx(
+                  "grid grid-cols-1 sm:grid-cols-[auto_auto_1fr_180px_auto] lg:grid-cols-[auto_auto_1fr_220px_auto] gap-4 rounded-xl p-4 sm:p-5 items-center border",
+                  votedCandidateIdToday === c.candidateId
+                    ? "shadow-sm"
+                    : "border border-gray-200 bg-gray-50/50"
+                )}
               >
                 {/* Col 1: image only */}
                 <div className="w-full sm:w-28 lg:w-36 aspect-square sm:aspect-auto sm:h-[120px] bg-gray-100 rounded-lg overflow-hidden justify-self-center sm:justify-self-start">
@@ -224,7 +230,16 @@ export default function SeatCandidatesResult() {
                   ) : null}
                 </div>
 
-                {/* Col 3: vote result – symbol left, progress bar + count + % right */}
+                {/* Col 3: আপনার ভোট badge (dedicated column) */}
+                <div className="flex items-center justify-start sm:justify-center min-w-0">
+                  {votedCandidateIdToday === c.candidateId ? (
+                    <span className="inline-flex items-center rounded-md border border-green-200 bg-green-50 px-2 py-1.5 text-xs font-semibold text-green-800 sm:px-4 sm:py-2 sm:text-sm">
+                      আপনার ভোট
+                    </span>
+                  ) : null}
+                </div>
+
+                {/* Col 4: vote result – symbol left, progress bar + count + % right */}
                 <div className="flex items-stretch gap-3 rounded-xl border-2 border-PurpleDark/20 bg-PurpleLight/50 p-4 sm:p-5 min-w-0">
                   <div className="w-12 h-12 shrink-0 rounded-xl bg-white flex items-center justify-center overflow-hidden border-2 border-PurpleDark/30 shadow-sm self-center">
                     {c.partyLogo ? (
@@ -270,7 +285,7 @@ export default function SeatCandidatesResult() {
                   </div>
                 </div>
 
-                {/* Col 4: vote button */}
+                {/* Col 5: vote button */}
                 <div className="flex justify-center sm:justify-end">
                   <button
                     type="button"
