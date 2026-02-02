@@ -12,7 +12,7 @@ const EMPTY = "all";
 
 export default function SearchBox() {
   const router = useRouter();
-  const { setSelectedSeat } = useSelectedSeat();
+  const { setSelectedSeat, triggerSearch } = useSelectedSeat();
   const [divisionValue, setDivisionValue] = useState<string>(EMPTY);
   const [districtValue, setDistrictValue] = useState<string>(EMPTY);
   const [seatValue, setSeatValue] = useState<string>(EMPTY);
@@ -109,6 +109,7 @@ export default function SearchBox() {
       const seatNo = seatNameToNo.get(trimmedSeat);
       if (seatNo) {
         setSelectedSeat({ seatNo, seatName: trimmedSeat });
+        triggerSearch();
       }
     } else if (districtValue !== EMPTY) {
       const trimmedDistrict = districtValue.trim();

@@ -16,7 +16,7 @@ import type {
 } from "@/types";
 
 export default function SeatCandidatesResult() {
-  const { selectedSeat } = useSelectedSeat();
+  const { selectedSeat, searchTrigger } = useSelectedSeat();
   const [candidatesData, setCandidatesData] = useState<Seat | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -90,7 +90,7 @@ export default function SeatCandidatesResult() {
     return () => {
       cancelled = true;
     };
-  }, [selectedSeat?.seatNo]);
+  }, [selectedSeat?.seatNo, searchTrigger]);
 
   // Scroll into view when candidates are loaded
   useEffect(() => {
