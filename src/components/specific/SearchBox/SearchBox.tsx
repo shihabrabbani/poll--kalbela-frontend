@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { IoSearch } from "react-icons/io5";
 import districtList from "@/assets/data/districtList";
 import seatList from "@/assets/data/seatList";
+import { getSeatNamesForDistrict } from "@/assets/data/districtToSeatNames";
 import SearchableSelect from "@/components/common/SearchableSelect";
 import { useSelectedSeat } from "@/contexts/SelectedSeatContext";
 
@@ -38,38 +39,25 @@ export default function SearchBox() {
   }, [selectedDivisionKey]);
 
   const seatOptions = useMemo(() => {
-    // If no division and no district selected, suggest all seats
-    if (!selectedDivisionKey && districtValue === EMPTY) {
-      return seatList
-        .flatMap((d) => d.seats ?? [])
-        .filter((s) => Boolean(s.seatName))
-        .map((s) => s.seatName as string);
+    // If district selected, use explicit mapping so every district suggests seats
+    if (districtValue !== EMPTY) {
+      const trimmed = districtValue.trim();
+      const byDistrict = getSeatNamesForDistrict(trimmed);
+      if (byDistrict.length) return byDistrict;
     }
 
-    // If division selected, filter by division
+    // If no district: show seats by division or all
     if (selectedDivisionKey) {
       const div = seatList.find((d) => d.division === selectedDivisionKey);
-      let seats = (div?.seats ?? []).filter((s) => Boolean(s.seatName));
-      // If district also selected, further filter by district
-      if (districtValue !== EMPTY) {
-        seats = seats.filter((s) =>
-          (s.seatName ?? "").startsWith(districtValue)
-        );
-      }
+      const seats = (div?.seats ?? []).filter((s) => Boolean(s.seatName));
       return seats.map((s) => s.seatName as string);
     }
 
-    // If only district selected (no division), filter all seats by district
-    if (districtValue !== EMPTY) {
-      const allSeats = seatList
-        .flatMap((d) => d.seats ?? [])
-        .filter((s) => Boolean(s.seatName));
-      return allSeats
-        .filter((s) => (s.seatName ?? "").startsWith(districtValue))
-        .map((s) => s.seatName as string);
-    }
-
-    return [];
+    // No division, no district: all seats
+    return seatList
+      .flatMap((d) => d.seats ?? [])
+      .filter((s) => Boolean(s.seatName))
+      .map((s) => s.seatName as string);
   }, [selectedDivisionKey, districtValue]);
 
   const seatNameToNo = useMemo(() => {
