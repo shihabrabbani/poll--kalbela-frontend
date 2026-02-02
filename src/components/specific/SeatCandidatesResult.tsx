@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import Image from "next/image";
+import axios from "axios";
 import { useSelectedSeat } from "@/contexts/SelectedSeatContext";
 import SectionTitle from "@/components/common/SectionTitle";
 import toBengaliDigits from "@/assets/lib/toBanglaDigits";
@@ -14,6 +15,49 @@ import type {
   Candidate,
   VoteSeatResponse,
 } from "@/types";
+
+/** Fetches seat + vote data and returns merged seat; throws or returns null on error. */
+async function fetchSeatWithVotes(seatNo: string): Promise<Seat | null> {
+  const seatNum = Number(seatNo);
+  const [seatResponse, voteResponse] = await Promise.all([
+    axios.get<ElectionSeatResponse>("/api/vote-counting"),
+    axios
+      .get<VoteSeatResponse>(`/api/vote/seat/${encodeURIComponent(seatNo)}`)
+      .catch(() => null),
+  ]);
+
+  if (!seatResponse?.data?.data) {
+    throw new Error("প্রার্থী তালিকা লোড হয়নি।");
+  }
+  const seats = seatResponse.data.data;
+  const seat = seats.find((s: Seat) => s.seatNumber === seatNum) ?? null;
+  if (!seat) {
+    return null;
+  }
+
+  const voteData =
+    voteResponse?.status === 200 && voteResponse?.data?.success
+      ? voteResponse.data.data
+      : null;
+  const voteByCandidateId = new Map(
+    voteData?.candidates?.map((c) => [c.candidateId, c]) ?? []
+  );
+  const mergedCandidates: Candidate[] = seat.candidates.map((c) => {
+    const vote = voteByCandidateId.get(c.candidateId);
+    if (!vote) return c;
+    return {
+      ...c,
+      votesReceived: vote.totalVote,
+      votePercentage: vote.votePercentage,
+    };
+  });
+
+  return {
+    ...seat,
+    candidates: mergedCandidates,
+    totalVotes: voteData?.totalVote ?? seat.totalVotes,
+  };
+}
 
 export default function SeatCandidatesResult() {
   const { selectedSeat, searchTrigger } = useSelectedSeat();
@@ -37,55 +81,29 @@ export default function SeatCandidatesResult() {
     setError(null);
     const seatNo = selectedSeat.seatNo;
 
-    Promise.all([
-      fetch("/api/vote-counting").then((res) => {
-        if (!res.ok) throw new Error("Failed to fetch candidates");
-        return res.json() as Promise<ElectionSeatResponse>;
-      }),
-      fetch(`/api/vote/seat/${encodeURIComponent(seatNo)}`).then((res) => {
-        if (!res.ok) return null;
-        return res.json() as Promise<VoteSeatResponse | null>;
-      }),
-    ])
-      .then(([seatResponse, voteResponse]) => {
+    (async () => {
+      try {
+        const seat = await fetchSeatWithVotes(seatNo);
         if (cancelled) return;
-        const seats = seatResponse?.data ?? [];
-        const seatNum = Number(seatNo);
-        const seat = seats.find((s: Seat) => s.seatNumber === seatNum) ?? null;
         if (!seat) {
           setCandidatesData(null);
           setError("আসনের প্রার্থী পাওয়া যায়নি");
           return;
         }
-        const voteData = voteResponse?.success ? voteResponse.data : null;
-        const voteByCandidateId = new Map(
-          voteData?.candidates?.map((c) => [c.candidateId, c]) ?? []
-        );
-        const mergedCandidates: Candidate[] = seat.candidates.map((c) => {
-          const vote = voteByCandidateId.get(c.candidateId);
-          if (!vote) return c;
-          return {
-            ...c,
-            votesReceived: vote.totalVote,
-            votePercentage: vote.votePercentage,
-          };
-        });
-        setCandidatesData({
-          ...seat,
-          candidates: mergedCandidates,
-          totalVotes: voteData?.totalVote ?? seat.totalVotes,
-        });
+        setCandidatesData(seat);
         setError(null);
-      })
-      .catch(() => {
-        if (!cancelled) {
-          setError("প্রার্থী তালিকা লোড হয়নি। আবার চেষ্টা করুন।");
-          setCandidatesData(null);
-        }
-      })
-      .finally(() => {
+      } catch (err) {
+        if (cancelled) return;
+        setError(
+          axios.isAxiosError(err)
+            ? err.message || "প্রার্থী তালিকা লোড হয়নি। আবার চেষ্টা করুন।"
+            : "প্রার্থী তালিকা লোড হয়নি। আবার চেষ্টা করুন।"
+        );
+        setCandidatesData(null);
+      } finally {
         if (!cancelled) setLoading(false);
-      });
+      }
+    })();
 
     return () => {
       cancelled = true;
@@ -236,56 +254,27 @@ export default function SeatCandidatesResult() {
                     onClick={async () => {
                       if (!selectedSeat?.seatNo) return;
                       setVotingCandidateId(c.candidateId);
-                      const result = await submitVote(
-                        Number(selectedSeat.seatNo),
-                        c.candidateId,
-                        1
-                      );
-                      setVotingCandidateId(null);
-                      if (result.success) {
-                        toast.success("ভোট সফলভাবে জমা হয়েছে");
-                        // Refetch to update counts
-                        const seatNo = selectedSeat.seatNo;
-                        const [seatRes, voteRes] = await Promise.all([
-                          fetch("/api/vote-counting").then((r) =>
-                            r.json() as Promise<ElectionSeatResponse>
-                          ),
-                          fetch(`/api/vote/seat/${encodeURIComponent(seatNo)}`).then(
-                            (r) =>
-                              r.ok
-                                ? (r.json() as Promise<VoteSeatResponse>)
-                                : null
-                          ),
-                        ]);
-                        const seats = seatRes?.data ?? [];
-                        const seatNum = Number(seatNo);
-                        const seat = seats.find(
-                          (s: Seat) => s.seatNumber === seatNum
-                        ) ?? null;
-                        if (seat && voteRes?.success) {
-                          const voteByCandidateId = new Map(
-                            voteRes.data?.candidates?.map((vc) => [
-                              vc.candidateId,
-                              vc,
-                            ]) ?? []
-                          );
-                          const merged = seat.candidates.map((can) => {
-                            const v = voteByCandidateId.get(can.candidateId);
-                            if (!v) return can;
-                            return {
-                              ...can,
-                              votesReceived: v.totalVote,
-                              votePercentage: v.votePercentage,
-                            };
-                          });
-                          setCandidatesData({
-                            ...seat,
-                            candidates: merged,
-                            totalVotes: voteRes.data?.totalVote ?? seat.totalVotes,
-                          });
+                      try {
+                        const result = await submitVote(
+                          Number(selectedSeat.seatNo),
+                          c.candidateId,
+                          1
+                        );
+                        if (result.success) {
+                          toast.success("ভোট সফলভাবে জমা হয়েছে");
+                          const updated = await fetchSeatWithVotes(selectedSeat.seatNo);
+                          if (updated) setCandidatesData(updated);
+                        } else {
+                          toast.error(result.message);
                         }
-                      } else {
-                        toast.error(result.message);
+                      } catch (err) {
+                        toast.error(
+                          axios.isAxiosError(err)
+                            ? err.message
+                            : "ভোট জমা হয়নি। আবার চেষ্টা করুন।"
+                        );
+                      } finally {
+                        setVotingCandidateId(null);
                       }
                     }}
                     className="px-5 py-2.5 bg-PurpleDark hover:bg-red-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors whitespace-nowrap"
