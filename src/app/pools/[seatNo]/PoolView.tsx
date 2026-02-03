@@ -1,18 +1,43 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React from "react";
 import SeatCandidatesResult from "@/components/specific/SeatCandidatesResult";
 import SeatCandidatesResultSkeleton from "@/components/specific/SeatCandidatesResultSkeleton";
-import seatList from "@/assets/data/seatList";
+import type { Seat } from "@/types";
 
-function getSeatName(seatNo: string): string | null {
-  const allSeats = seatList.flatMap((d) => d.seats ?? []);
-  const seat = allSeats.find((s) => String(s.seatNo) === String(seatNo));
-  return seat?.seatName ?? null;
+interface PoolViewProps {
+  seatNo: string;
+  seatName: string | null;
+  initialSeat: Seat | null;
+  initialError: string | null;
 }
 
-export default function PoolView({ seatNo }: { seatNo: string }) {
-  const seatName = useMemo(() => getSeatName(seatNo), [seatNo]);
+export default function PoolView({
+  seatNo,
+  seatName,
+  initialSeat,
+  initialError,
+}: PoolViewProps) {
+  if (!seatNo) {
+    return <SeatCandidatesResultSkeleton />;
+  }
 
-  return <SeatCandidatesResult seatNo={seatNo} seatName={seatName || ""} />;
+  if (!seatName) {
+    return (
+      <section className="container mx-auto mt-8 px-4">
+        <div className="rounded-2xl bg-white border border-gray-200 p-12 text-center">
+          <p className="text-gray-600">আসন পাওয়া যায়নি।</p>
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <SeatCandidatesResult
+      seatNo={seatNo}
+      seatName={seatName}
+      initialSeat={initialSeat}
+      initialError={initialError}
+    />
+  );
 }

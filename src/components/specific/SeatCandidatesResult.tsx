@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import axios from "axios";
 import clsx from "clsx";
@@ -12,126 +12,42 @@ import {
 } from "@/assets/lib/voteStorage";
 import { toast } from "react-toastify";
 import { submitVote } from "@/app/actions/vote";
-import type {
-  ElectionSeatResponse,
-  Seat,
-  Candidate,
-  VoteSeatResponse,
-  VoteSuccessData,
-} from "@/types";
-
-/** Fetches seat + vote data and returns merged seat; throws or returns null on error. */
-async function fetchSeatWithVotes(seatNo: string): Promise<Seat | null> {
-  const seatNum = Number(seatNo);
-  const [seatResponse, voteResponse] = await Promise.all([
-    axios.get<ElectionSeatResponse>("/api/vote-counting"),
-    axios
-      .get<VoteSeatResponse>(`/api/vote/seat/${encodeURIComponent(seatNo)}`)
-      .catch(() => null),
-  ]);
-
-  if (!seatResponse?.data?.data) {
-    throw new Error("প্রার্থী তালিকা লোড হয়নি।");
-  }
-  const seats = seatResponse.data.data;
-  const seat = seats.find((s: Seat) => s.seatNumber === seatNum) ?? null;
-  if (!seat) {
-    return null;
-  }
-
-  const voteData =
-    voteResponse?.status === 200 && voteResponse?.data?.success
-      ? voteResponse.data.data
-      : null;
-  const voteByCandidateId = new Map(
-    voteData?.candidates?.map((c) => [c.candidateId, c]) ?? []
-  );
-  const mergedCandidates: Candidate[] = seat.candidates.map((c) => {
-    const vote = voteByCandidateId.get(c.candidateId);
-    if (!vote) return c;
-    return {
-      ...c,
-      votesReceived: vote.totalVote,
-      votePercentage: vote.votePercentage,
-    };
-  });
-
-  return {
-    ...seat,
-    candidates: mergedCandidates,
-    totalVotes: voteData?.totalVote ?? seat.totalVotes,
-  };
-}
+import type { Seat, Candidate, VoteSuccessData } from "@/types";
 
 interface SeatCandidatesResultProps {
   seatNo: string;
   seatName: string;
+  initialSeat: Seat | null;
+  initialError: string | null;
 }
 
 export default function SeatCandidatesResult({
   seatNo,
   seatName,
+  initialSeat,
+  initialError,
 }: SeatCandidatesResultProps) {
-  const [candidatesData, setCandidatesData] = useState<Seat | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [candidatesData, setCandidatesData] = useState<Seat | null>(
+    initialSeat
+  );
+  const [error, setError] = useState<string | null>(initialError);
   const [votingCandidateId, setVotingCandidateId] = useState<number | null>(
     null
   );
   const sectionRef = useRef<HTMLElement>(null);
 
+  // Keep in sync when navigating to same component with different props
   useEffect(() => {
-    if (!seatNo) return;
+    setCandidatesData(initialSeat);
+    setError(initialError);
+  }, [initialSeat, initialError]);
 
-    let cancelled = false;
-    setLoading(true);
-    setError(null);
-
-    (async () => {
-      try {
-        const seat = await fetchSeatWithVotes(seatNo);
-        if (cancelled) return;
-        if (!seat) {
-          setCandidatesData(null);
-          setError("আসনের প্রার্থী পাওয়া যায়নি");
-          return;
-        }
-        setCandidatesData(seat);
-        setError(null);
-      } catch (err) {
-        if (cancelled) return;
-        setError(
-          axios.isAxiosError(err)
-            ? err.message || "প্রার্থী তালিকা লোড হয়নি। আবার চেষ্টা করুন।"
-            : "প্রার্থী তালিকা লোড হয়নি। আবার চেষ্টা করুন।"
-        );
-        setCandidatesData(null);
-      } finally {
-        if (!cancelled) setLoading(false);
-      }
-    })();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [seatNo]);
-
-  // Scroll into view when candidates are loaded
+  // Scroll into view when section mounts with data
   useEffect(() => {
-    if ((candidatesData || error) && !loading && sectionRef.current) {
+    if ((candidatesData || error) && sectionRef.current) {
       sectionRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
     }
-  }, [candidatesData, error, loading]);
-
-  if (loading) {
-    return (
-      <section ref={sectionRef} className="container mx-auto mt-4 px-4 lg:mt-6">
-        <div className="rounded-2xl bg-white border border-gray-200 p-12 lg:p-16 min-h-[200px] lg:min-h-[260px] flex items-center justify-center text-center">
-          <p className="text-gray-600">প্রার্থী তালিকা লোড হচ্ছে...</p>
-        </div>
-      </section>
-    );
-  }
+  }, []);
 
   if (error) {
     return (

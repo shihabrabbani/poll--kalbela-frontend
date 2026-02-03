@@ -1,3 +1,5 @@
+import type { Seat, Candidate, VoteSeatResponse } from "@/types";
+
 export interface FetchOptions {
   revalidateSeconds?: number;
 }
@@ -89,6 +91,63 @@ export async function fetchVoteCountingAsCandidates(options?: FetchOptions) {
     opts
   );
   return res.json();
+}
+
+const KBV_VOTE_URL = "https://kbv.ideahubbd.com/api/Vote/seatNumber";
+
+export async function fetchVoteBySeat(
+  seatNo: string,
+  options?: FetchOptions
+): Promise<VoteSeatResponse | null> {
+  const opts = getFetchOpts(options);
+  try {
+    const url = `${KBV_VOTE_URL}?seatNumber=${encodeURIComponent(
+      seatNo.trim()
+    )}`;
+    const res = await fetch(url, {
+      ...opts,
+      headers: { "Content-Type": "application/json" },
+    });
+    if (!res.ok) return null;
+    return res.json();
+  } catch {
+    return null;
+  }
+}
+
+/** Fetches seat from vote-counting and merges with vote-by-seat data. Returns null if seat not found or on error. */
+export async function fetchSeatWithVotes(
+  seatNo: string,
+  options?: FetchOptions
+): Promise<Seat | null> {
+  const seatNum = Number(seatNo);
+  const [countingRes, voteRes] = await Promise.all([
+    fetchVoteCountingAsCandidates(options),
+    fetchVoteBySeat(seatNo, options),
+  ]);
+  const seats: Seat[] = countingRes?.data ?? [];
+  const seat = seats.find((s: Seat) => s.seatNumber === seatNum) ?? null;
+  if (!seat) return null;
+
+  const voteData = voteRes?.success && voteRes?.data ? voteRes.data : null;
+  const voteByCandidateId = new Map(
+    voteData?.candidates?.map((c) => [c.candidateId, c]) ?? []
+  );
+  const mergedCandidates: Candidate[] = seat.candidates.map((c) => {
+    const vote = voteByCandidateId.get(c.candidateId);
+    if (!vote) return c;
+    return {
+      ...c,
+      votesReceived: vote.totalVote,
+      votePercentage: vote.votePercentage,
+    };
+  });
+
+  return {
+    ...seat,
+    candidates: mergedCandidates,
+    totalVotes: voteData?.totalVote ?? seat.totalVotes,
+  };
 }
 
 export async function fetchCurrentPartyResults(options?: FetchOptions) {
