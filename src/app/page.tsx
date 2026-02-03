@@ -27,7 +27,9 @@ export default async function Home() {
     <div className="lg:mb-14 mb-10">
       <MobileNavbar />
       <HeroPart />
-      <HomeSearchSection />
+      <div className="lg:hidden">
+        <HomeSearchSection />
+      </div>
       <SeatInfo3 className="lg:mt-14 mt-10" />
       {/* <HomeSeatPoolSection seats={seats} error={error} /> */}
     </div>

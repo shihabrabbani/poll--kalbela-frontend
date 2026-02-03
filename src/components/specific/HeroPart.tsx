@@ -1,9 +1,8 @@
 "use client";
 import React from "react";
-import img3 from "@/assets/Images/BannerImage/Bangladesh-Flag.jpg";
-import CountdownTimer from "../common/CountDownTimer";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import HomeSearchSection from "@/components/specific/HomeSearchSection";
 
 const HeroPart = () => {
   const pathname = usePathname();
@@ -64,6 +63,9 @@ const HeroPart = () => {
             >
               কালবেলা অনলাইন জরিপ
             </p>
+          </div>
+          <div className="hidden lg:block container mx-auto w-full mt-8 px-4">
+            <HomeSearchSection />
           </div>
         </div>
       </div>
