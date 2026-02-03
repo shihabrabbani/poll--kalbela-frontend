@@ -7,13 +7,11 @@ import districtList from "@/assets/data/districtList";
 import seatList from "@/assets/data/seatList";
 import { getSeatNamesForDistrict } from "@/assets/data/districtToSeatNames";
 import SearchableSelect from "@/components/common/SearchableSelect";
-import { useSelectedSeat } from "@/contexts/SelectedSeatContext";
 
 const EMPTY = "all";
 
 export default function SearchBox() {
   const router = useRouter();
-  const { setSelectedSeat, triggerSearch } = useSelectedSeat();
   const [divisionValue, setDivisionValue] = useState<string>(EMPTY);
   const [districtValue, setDistrictValue] = useState<string>(EMPTY);
   const [seatValue, setSeatValue] = useState<string>(EMPTY);
@@ -77,28 +75,22 @@ export default function SearchBox() {
     setDivisionValue(value);
     setDistrictValue(EMPTY);
     setSeatValue(EMPTY);
-    setSelectedSeat(null);
   };
 
   const onDistrictChange = (value: string) => {
     setDistrictValue(value);
     setSeatValue(EMPTY);
-    setSelectedSeat(null);
   };
 
   const onSeatChange = (value: string) => {
     setSeatValue(value);
-    if (value === EMPTY) setSelectedSeat(null);
   };
 
   const handleSearch = () => {
     if (seatValue !== EMPTY) {
       const trimmedSeat = seatValue.trim();
       const seatNo = seatNameToNo.get(trimmedSeat);
-      if (seatNo) {
-        setSelectedSeat({ seatNo, seatName: trimmedSeat });
-        triggerSearch();
-      }
+      if (seatNo) router.push(`/pools/seat-${seatNo}`);
     } else if (districtValue !== EMPTY) {
       const trimmedDistrict = districtValue.trim();
       router.push(`/districts/${encodeURIComponent(trimmedDistrict)}`);

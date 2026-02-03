@@ -4,14 +4,12 @@ import React, { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import axios from "axios";
 import clsx from "clsx";
-import { useSelectedSeat } from "@/contexts/SelectedSeatContext";
 import SectionTitle from "@/components/common/SectionTitle";
 import toBengaliDigits from "@/assets/lib/toBanglaDigits";
 import {
   getVotedCandidateForSeatToday,
   setVotedForSeatToday,
 } from "@/assets/lib/voteStorage";
-import EmptyCandidateMessage from "@/components/specific/EmptyCandidateMessage";
 import { toast } from "react-toastify";
 import { submitVote } from "@/app/actions/vote";
 import type {
@@ -65,8 +63,15 @@ async function fetchSeatWithVotes(seatNo: string): Promise<Seat | null> {
   };
 }
 
-export default function SeatCandidatesResult() {
-  const { selectedSeat, searchTrigger } = useSelectedSeat();
+interface SeatCandidatesResultProps {
+  seatNo: string;
+  seatName: string;
+}
+
+export default function SeatCandidatesResult({
+  seatNo,
+  seatName,
+}: SeatCandidatesResultProps) {
   const [candidatesData, setCandidatesData] = useState<Seat | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -76,16 +81,11 @@ export default function SeatCandidatesResult() {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    if (!selectedSeat?.seatNo) {
-      setCandidatesData(null);
-      setError(null);
-      return;
-    }
+    if (!seatNo) return;
 
     let cancelled = false;
     setLoading(true);
     setError(null);
-    const seatNo = selectedSeat.seatNo;
 
     (async () => {
       try {
@@ -114,21 +114,14 @@ export default function SeatCandidatesResult() {
     return () => {
       cancelled = true;
     };
-  }, [selectedSeat?.seatNo, searchTrigger]);
+  }, [seatNo]);
 
   // Scroll into view when candidates are loaded
   useEffect(() => {
-    if (
-      selectedSeat &&
-      (candidatesData || error) &&
-      !loading &&
-      sectionRef.current
-    ) {
+    if ((candidatesData || error) && !loading && sectionRef.current) {
       sectionRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
     }
-  }, [selectedSeat, candidatesData, error, loading]);
-
-  if (!selectedSeat) return <EmptyCandidateMessage />;
+  }, [candidatesData, error, loading]);
 
   if (loading) {
     return (
@@ -151,9 +144,7 @@ export default function SeatCandidatesResult() {
   }
 
   const candidates = candidatesData?.candidates ?? [];
-  const votedCandidateIdToday = selectedSeat
-    ? getVotedCandidateForSeatToday(selectedSeat.seatNo)
-    : null;
+  const votedCandidateIdToday = getVotedCandidateForSeatToday(seatNo);
   const votedCandidateToday =
     votedCandidateIdToday != null
       ? candidates.find((c) => c.candidateId === votedCandidateIdToday)
@@ -162,15 +153,16 @@ export default function SeatCandidatesResult() {
   return (
     <section ref={sectionRef} className="container mx-auto mt-2 px-4 lg:mt-4">
       <div className="rounded-2xl bg-white border border-gray-200 overflow-hidden">
-        <SectionTitle>
-          {selectedSeat.seatName} – পছন্দের প্রার্থীকে ভোট দিন
-        </SectionTitle>
+        <SectionTitle>{seatName} – পছন্দের প্রার্থীকে ভোট দিন</SectionTitle>
         {votedCandidateIdToday != null && (
           <div className="mx-4 mt-2 mb-2 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
             আপনি আজ এই আসনে{" "}
             {votedCandidateToday ? (
               <>
-                <span className="font-bold">{votedCandidateToday.candidateName}</span> কে ভোট দিয়েছেন। আগামীকাল আবার ভোট দিতে পারবেন।
+                <span className="font-bold">
+                  {votedCandidateToday.candidateName}
+                </span>{" "}
+                কে ভোট দিয়েছেন। আগামীকাল আবার ভোট দিতে পারবেন।
               </>
             ) : (
               "ভোট দিয়েছেন। আগামীকাল আবার ভোট দিতে পারবেন।"
@@ -208,8 +200,7 @@ export default function SeatCandidatesResult() {
                 {/* Col 2: seat info, name, party, symbol name */}
                 <div className="space-y-1 min-w-0">
                   <p className="text-xs text-gray-600">
-                    {selectedSeat.seatName} · আসন নং{" "}
-                    {toBengaliDigits(selectedSeat.seatNo)}
+                    {seatName} · আসন নং {toBengaliDigits(seatNo)}
                   </p>
                   <h3 className="text-lg font-bold text-PurpleDark">
                     {c.candidateName}
@@ -294,17 +285,16 @@ export default function SeatCandidatesResult() {
                       votedCandidateIdToday != null
                     }
                     onClick={async () => {
-                      if (!selectedSeat?.seatNo || votedCandidateIdToday != null)
-                        return;
+                      if (!seatNo || votedCandidateIdToday != null) return;
                       setVotingCandidateId(c.candidateId);
                       try {
                         const result = await submitVote(
-                          Number(selectedSeat.seatNo),
+                          Number(seatNo),
                           c.candidateId,
                           1
                         );
                         if (result.success && result.data) {
-                          setVotedForSeatToday(selectedSeat.seatNo, c.candidateId);
+                          setVotedForSeatToday(seatNo, c.candidateId);
                           toast.success("ভোট সফলভাবে জমা হয়েছে");
                           const data: VoteSuccessData = result.data;
                           setCandidatesData((prev) => {
@@ -347,7 +337,9 @@ export default function SeatCandidatesResult() {
                     }}
                     className="px-5 py-2.5 bg-PurpleDark hover:bg-red-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors whitespace-nowrap"
                   >
-                    {votingCandidateId === c.candidateId ? "জমা হচ্ছে..." : "ভোট দিন"}
+                    {votingCandidateId === c.candidateId
+                      ? "জমা হচ্ছে..."
+                      : "ভোট দিন"}
                   </button>
                 </div>
               </div>
