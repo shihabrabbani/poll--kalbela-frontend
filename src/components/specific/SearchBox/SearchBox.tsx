@@ -102,7 +102,7 @@ export default function SearchBox() {
       <div className="container mx-auto">
         <div className="bg-white rounded-2xl border border-gray-300 py-8 p-4">
           <p className="text-left text-gray-800 text-lg lg:text-xl font-bold mb-4 lg:mb-5">
-            পছন্দের প্রার্থীকে ভোট দিতে আসন নির্বাচন করুন
+            আপনার পছন্দের প্রার্থীকে সমর্থন করতে আসন সিলেক্ট করুন
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
             <div className="sm:col-span-1">

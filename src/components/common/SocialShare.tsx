@@ -32,7 +32,7 @@ export default function SocialShare({
   title = defaultTitle,
   description = defaultDescription,
   className = "",
-  iconSize = 36,
+  iconSize = 28,
   round = true,
 }: SocialShareProps) {
   const [shareUrl, setShareUrl] = useState(url ?? "");
@@ -72,6 +72,9 @@ export default function SocialShare({
       className={`flex items-center gap-2 flex-wrap ${className}`}
       aria-label="শেয়ার করুন"
     >
+      <span className="text-base text-gray-700 font-semibold mr-3 hidden md:block">
+        শেয়ার করুন
+      </span>
       <FacebookShareButton url={shareUrl}>
         <FacebookIcon size={iconSize} round={round} />
       </FacebookShareButton>

@@ -65,9 +65,10 @@ export default function SeatCandidatesResult({
           action={
             <SocialShare
               title={"ত্রয়োদশ জাতীয় সংসদ নির্বাচন ২০২৬"}
-              iconSize={32}
+              iconSize={26}
             />
           }
+          className="justify-start flex-wrap gap-3 items-center"
         >
           {seatName} – পছন্দের প্রার্থী
         </SectionTitle>

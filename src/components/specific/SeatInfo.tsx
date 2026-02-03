@@ -19,7 +19,7 @@ const SeatInfo3 = ({ className }: { className?: string }) => {
         <div className="bg-white rounded-2xl">
           <div className="mb-3">
             <SectionTitle>
-              পছন্দের প্রার্থীকে ভোট দিতে আসন ক্লিক করুন
+              আপনার পছন্দের প্রার্থীকে সমর্থন করতে আসন সিলেক্ট করুন
             </SectionTitle>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6 px-4 lg:px-6 pb-4 lg:pb-6">
