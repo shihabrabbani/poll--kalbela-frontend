@@ -174,7 +174,7 @@ export default function SeatCandidatesResult({
                       </span>
                       <span className="font-bold text-PurpleDark">
                         {typeof c.votePercentage === "number"
-                          ? `${c.votePercentage.toFixed(1)}%`
+                          ? `${toBengaliDigits(c.votePercentage.toFixed(1))}%`
                           : "—"}
                       </span>
                     </div>
