@@ -45,7 +45,7 @@ const SeatInfo3 = ({ className }: { className?: string }) => {
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 h-[228px] lg:h-[290px] overflow-y-auto custom-scrollbar">
                   {seats.map((seatdata, i) => (
                     <Link
-                      href={`/seats/${seatdata.seatNo}`}
+                      href={`/pools/seat-${seatdata.seatNo}`}
                       key={i}
                       className="flex flex-col justify-between text-center items-center rounded-sm bg-PurpleLight hover:bg-hover py-2 duration-200"
                     >

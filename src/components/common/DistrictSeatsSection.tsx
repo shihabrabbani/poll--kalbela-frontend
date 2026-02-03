@@ -29,11 +29,15 @@ const DistrictSeatsSection: React.FC<DistrictSeatsSectionProps> = ({
   // Sort seats to show current seat first if currentSeatNo is provided
   const sortedSeats = (() => {
     if (!currentSeatNo) return seats;
-    
+
     const currentSeatStr = String(currentSeatNo);
-    const currentSeat = seats.find((seat) => String(seat.seatNo) === currentSeatStr);
-    const otherSeats = seats.filter((seat) => String(seat.seatNo) !== currentSeatStr);
-    
+    const currentSeat = seats.find(
+      (seat) => String(seat.seatNo) === currentSeatStr
+    );
+    const otherSeats = seats.filter(
+      (seat) => String(seat.seatNo) !== currentSeatStr
+    );
+
     return currentSeat ? [currentSeat, ...otherSeats] : seats;
   })();
 
@@ -47,27 +51,33 @@ const DistrictSeatsSection: React.FC<DistrictSeatsSectionProps> = ({
               <div className="flex-1 overflow-y-auto custom-scrollbar min-h-0 pr-2">
                 <div className="grid grid-cols-1 gap-3">
                   {sortedSeats.map((seat) => {
-                    const isCurrentSeat = currentSeatNo && String(currentSeatNo) === String(seat.seatNo);
-                    
+                    const isCurrentSeat =
+                      currentSeatNo &&
+                      String(currentSeatNo) === String(seat.seatNo);
+
                     return (
                       <Link
                         key={seat.seatNo}
-                        href={`/seats/${seat.seatNo}`}
+                        href={`/pools/seat-${seat.seatNo}`}
                         className="group"
                       >
                         <div className="relative group">
-                          <div className={`relative z-10 bg-white border rounded-2xl p-4 transition-all duration-300 cursor-pointer ${
-                            isCurrentSeat 
-                              ? "border-PurpleDark shadow-xl" 
-                              : "border-gray-200 hover:border-PurpleDark hover:shadow-xl"
-                          }`}>
+                          <div
+                            className={`relative z-10 bg-white border rounded-2xl p-4 transition-all duration-300 cursor-pointer ${
+                              isCurrentSeat
+                                ? "border-PurpleDark shadow-xl"
+                                : "border-gray-200 hover:border-PurpleDark hover:shadow-xl"
+                            }`}
+                          >
                             <div className="flex items-center justify-between">
                               <div className="flex-1">
-                                <p className={`text-base font-semibold transition-colors ${
-                                  isCurrentSeat 
-                                    ? "text-PurpleDark" 
-                                    : "text-gray-800 group-hover:text-PurpleDark"
-                                }`}>
+                                <p
+                                  className={`text-base font-semibold transition-colors ${
+                                    isCurrentSeat
+                                      ? "text-PurpleDark"
+                                      : "text-gray-800 group-hover:text-PurpleDark"
+                                  }`}
+                                >
                                   {seat.seatName}
                                 </p>
                                 <p className="text-sm text-gray-500 mt-1">
@@ -107,18 +117,18 @@ const DistrictSeatsSection: React.FC<DistrictSeatsSectionProps> = ({
                               </div>
                             </div>
 
-                          {/* Gradient line */}
-                          <div className="mt-2 h-[3px] w-full overflow-hidden rounded">
-                            {/* <div
+                            {/* Gradient line */}
+                            <div className="mt-2 h-[3px] w-full overflow-hidden rounded">
+                              {/* <div
                               className="h-full bg-gradient-to-r from-PurpleDark via-transparent to-PurpleDark 
                     scale-x-0 group-hover:scale-x-100 
                     origin-left group-hover:origin-center 
                     transition-transform duration-500 ease-out"
                             ></div> */}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </Link>
+                      </Link>
                     );
                   })}
                 </div>

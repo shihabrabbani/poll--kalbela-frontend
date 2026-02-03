@@ -108,7 +108,7 @@ const SeatNavigationMap = ({ selectedDivision }) => {
             );
           } else {
             return (
-              <Link key={i} href={`seats/${seat.seatNo}`}>
+              <Link key={i} href={`/pools/seat-${seat.seatNo}`}>
                 <path
                   key={seat?.seatNo}
                   id="st_57"

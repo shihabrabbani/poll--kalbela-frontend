@@ -64,13 +64,15 @@ function DistrictMap({ seatNo, districtNo, districtName }) {
           if (parseInt(seat?.seatNo) >= 174 && parseInt(seat?.seatNo) <= 193) {
             return (
               <>
-                <Link key={seat?.seatNo} href={`/seats/${seat?.seatNo}`}>
+                <Link key={seat?.seatNo} href={`/pools/seat-${seat?.seatNo}`}>
                   <polyline
                     id={`seat_${seat?.seatNo}`}
                     className={cn(
                       "fill-red-300 stroke-white stroke-1 hover:fill-PurpleDark transition-all duration-1000",
                       {
-                        "fill-PurpleDark": activeSeatNo && String(activeSeatNo) === String(seat?.seatNo),
+                        "fill-PurpleDark":
+                          activeSeatNo &&
+                          String(activeSeatNo) === String(seat?.seatNo),
                       }
                     )}
                     style={{ strokeMiterlimit: 10 }}
@@ -95,7 +97,7 @@ function DistrictMap({ seatNo, districtNo, districtName }) {
           } else {
             //All except Dhaka District
             return (
-              <Link href={`/seats/${seat.seatNo}`} key={seat?.seatNo}>
+              <Link href={`/pools/seat-${seat.seatNo}`} key={seat?.seatNo}>
                 {(seat?.seatNo === "222") | "223" | "110" && (
                   <path
                     id={`seat_${seat?.seatNo}`}
@@ -104,7 +106,9 @@ function DistrictMap({ seatNo, districtNo, districtName }) {
                     className={cn(
                       "fill-red-300 stroke-white stroke-1 hover:fill-PurpleDark transition-all duration-1000",
                       {
-                        "fill-PurpleDark": activeSeatNo && String(activeSeatNo) === String(seat?.seatNo),
+                        "fill-PurpleDark":
+                          activeSeatNo &&
+                          String(activeSeatNo) === String(seat?.seatNo),
                       }
                     )}
                   />
@@ -114,7 +118,9 @@ function DistrictMap({ seatNo, districtNo, districtName }) {
                   className={cn(
                     "fill-red-300 stroke-white stroke-1 hover:fill-PurpleDark transition-all duration-1000",
                     {
-                      "fill-PurpleDark": activeSeatNo && String(activeSeatNo) === String(seat?.seatNo),
+                      "fill-PurpleDark":
+                        activeSeatNo &&
+                        String(activeSeatNo) === String(seat?.seatNo),
                     }
                   )}
                   style={{ strokeMiterlimit: 10 }}
@@ -151,13 +157,15 @@ function DistrictMap({ seatNo, districtNo, districtName }) {
             />
             {currentDistrict?.zoom.map((seat) => (
               <g key={seat.seatNo}>
-                <Link href={`/seats/${seat?.seatNo}`}>
+                <Link href={`/pools/seat-${seat?.seatNo}`}>
                   {console.log(seatNo === seat?.seatNo, "Matches")}
                   <polyline
                     id={`seat_${seat?.seatNo}`}
                     className={cn(
                       "fill-red-300 stroke-white stroke-1 hover:fill-PurpleDark transition-all duration-1000",
-                      activeSeatNo && String(activeSeatNo) === String(seat?.seatNo) && "fill-PurpleDark"
+                      activeSeatNo &&
+                        String(activeSeatNo) === String(seat?.seatNo) &&
+                        "fill-PurpleDark"
                     )}
                     points={seat?.points}
                   />
