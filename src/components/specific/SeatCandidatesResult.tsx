@@ -70,7 +70,11 @@ export default function SeatCandidatesResult({
           }
           className="justify-start flex-wrap gap-3 items-center"
         >
-          {seatName} – পছন্দের প্রার্থী
+          <span>{seatName}</span>
+          <span className="text-gray-400 font-light mx-1" aria-hidden="true">
+            •
+          </span>
+          <span>আসন নং {toBengaliDigits(seatNo)}</span>
         </SectionTitle>
         {votedCandidateIdToday != null && (
           <div className="mx-4 mt-2 mb-2 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
@@ -117,8 +121,12 @@ export default function SeatCandidatesResult({
 
                 {/* Col 2: seat info, name, party, symbol name */}
                 <div className="space-y-1 min-w-0">
-                  <p className="text-xs text-gray-600">
-                    {seatName} · আসন নং {toBengaliDigits(seatNo)}
+                  <p className="text-xs text-gray-600 flex flex-wrap items-center gap-x-1.5">
+                    <span>{seatName}</span>
+                    <span className="text-gray-400" aria-hidden="true">
+                      •
+                    </span>
+                    <span>আসন নং {toBengaliDigits(seatNo)}</span>
                   </p>
                   <h3 className="text-lg font-bold text-PurpleDark">
                     {c.candidateName}
