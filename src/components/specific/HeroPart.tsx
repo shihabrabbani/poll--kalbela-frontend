@@ -45,10 +45,10 @@ const HeroPart = ({ children }: HeroPartProps) => {
             }`}
           >
             <div className="flex flex-col justify-center items-center text-center px-4">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-white font-bold tracking-tight max-w-2xl">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl text-white font-bold tracking-tight max-w-2xl">
                 ত্রয়োদশ জাতীয় সংসদ নির্বাচন ২০২৬
               </h1>
-              <p className="mt-4 text-base sm:text-lg md:text-xl text-white/95 font-medium tracking-wide">
+              <p className="mt-4 sm:mt-5 text-2xl sm:text-3xl md:text-4xl text-white font-bold tracking-tight max-w-2xl">
                 কালবেলা অনলাইন জরিপ
               </p>
             </div>
