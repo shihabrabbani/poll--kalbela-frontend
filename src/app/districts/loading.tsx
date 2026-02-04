@@ -1,13 +1,11 @@
 import React from "react";
-import MobileNavbar from "@/components/common/MobileNavbar";
 import ZilaInfoSkeleton from "@/components/specific/ZilaInfoSkeleton";
 
 const DistrictsPageSkeleton = () => {
   return (
     <section>
       <div className="lg:mb-14 mb-10">
-        <MobileNavbar />
-        {/* SubHeroPart Skeleton */}
+        {/* SubHeroPart Skeleton - layout shows hero */}
         <section>
           <div className="bg-gray-200 w-full h-[250px] relative animate-gray-pulse">
             <div className="mx-auto text-white py-2 flex flex-col justify-center items-center bg-black bg-opacity-40 h-full text-center">

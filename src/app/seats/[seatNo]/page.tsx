@@ -55,7 +55,6 @@ import bashilogo from "@/assets/Images/partyLogo/bashi.png";
 import cyclelogo from "@/assets/Images/partyLogo/cycle.png";
 import nongorlogo from "@/assets/Images/partyLogo/Nongor.png";
 import malalogo from "@/assets/Images/partyLogo/Fulermala.png";
-import MobileNavbar from "@/components/common/MobileNavbar";
 import VoterInfoCard from "@/components/common/VoterInfoCard";
 import toEnglishDigits from "@/assets/lib/toEnglishDigits";
 import StickyAd from "@/components/common/StickyAd";
@@ -382,8 +381,6 @@ const Page = async ({ params }: { params: Promise<{ seatNo: string }> }) => {
 
   return (
     <div className="lg:mb-14 mb-10">
-      <MobileNavbar />
-
       <RoutesHeroSections
         data={{
           title: seatInfoData.seatName,

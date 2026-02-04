@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { IoSearch } from "react-icons/io5";
 import districtList from "@/assets/data/districtList";
@@ -10,11 +10,77 @@ import SearchableSelect from "@/components/common/SearchableSelect";
 
 const EMPTY = "all";
 
-export default function SearchBox() {
+function findDivisionAndDistrictForSeat(
+  seatNo: string,
+  seatName: string
+): {
+  divisionText: string;
+  districtName: string | null;
+} | null {
+  const allSeats = seatList.flatMap((d) => d.seats ?? []);
+  const seat = allSeats.find(
+    (s) =>
+      String(s.seatNo) === String(seatNo) ||
+      (s.seatName && s.seatName.trim() === seatName.trim())
+  );
+  if (!seat?.seatName) return null;
+  const divisionEntry = seatList.find((d) =>
+    (d.seats ?? []).some(
+      (s) =>
+        String(s.seatNo) === String(seat.seatNo) && s.seatName === seat.seatName
+    )
+  );
+  if (!divisionEntry) return null;
+  let districtName: string | null = null;
+  for (const div of districtList) {
+    const districts = div.districts ?? [];
+    for (const dist of districts) {
+      const names = getSeatNamesForDistrict(dist.districtName);
+      if (names.some((n) => n.trim() === seat.seatName?.trim())) {
+        districtName = dist.districtName;
+        break;
+      }
+    }
+    if (districtName) break;
+  }
+  return {
+    divisionText: divisionEntry.text,
+    districtName,
+  };
+}
+
+interface SearchBoxProps {
+  /** Pre-select this seat on mount (e.g. on pool page). */
+  initialSeatNo?: string;
+  /** Pre-select this seat name on mount. */
+  initialSeatName?: string | null;
+}
+
+export default function SearchBox({
+  initialSeatNo,
+  initialSeatName,
+}: SearchBoxProps = {}) {
   const router = useRouter();
   const [divisionValue, setDivisionValue] = useState<string>(EMPTY);
   const [districtValue, setDistrictValue] = useState<string>(EMPTY);
   const [seatValue, setSeatValue] = useState<string>(EMPTY);
+
+  useEffect(() => {
+    const seatNo = initialSeatNo?.trim();
+    const seatName =
+      initialSeatName?.trim() ||
+      (seatNo
+        ? seatList
+            .flatMap((d) => d.seats ?? [])
+            .find((s) => String(s.seatNo) === String(seatNo))?.seatName
+        : null);
+    if (!seatName) return;
+    const found = findDivisionAndDistrictForSeat(seatNo ?? "", seatName);
+    if (!found) return;
+    setDivisionValue(found.divisionText);
+    setDistrictValue(found.districtName ?? EMPTY);
+    setSeatValue(seatName);
+  }, [initialSeatNo, initialSeatName]);
 
   const divisionOptions = useMemo(() => districtList.map((d) => d.text), []);
 
@@ -100,7 +166,7 @@ export default function SearchBox() {
   return (
     <section className="mt-6 lg:mt-8">
       <div className="container mx-auto">
-        <div className="bg-white rounded-2xl border border-gray-300 py-8 p-4">
+        <div className="bg-white rounded-2xl border border-gray-300 py-8 p-4 text-gray-800">
           <p className="text-left text-gray-800 text-lg lg:text-xl font-bold mb-4 lg:mb-5">
             আপনার পছন্দের প্রার্থীকে সমর্থন করতে আসন সিলেক্ট করুন
           </p>

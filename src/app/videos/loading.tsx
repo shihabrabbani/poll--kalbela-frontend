@@ -1,10 +1,8 @@
 import React from "react";
-import MobileNavbar from "@/components/common/MobileNavbar";
 
 const VideosPageSkeleton = () => {
   return (
     <section>
-      <MobileNavbar />
       <div className="container mx-auto lg:mt-14 lg:mb-14 mt-10 mb-10">
         <div className="rounded-2xl bg-white">
           {/* Header Skeleton */}

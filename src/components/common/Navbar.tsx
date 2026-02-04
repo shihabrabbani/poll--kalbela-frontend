@@ -15,18 +15,18 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="container bg-[#f1f4f9] p-2 hidden lg:block">
-      <div className="grid grid-cols-6 text-gray-600 px-6">
-        <Link href="/" className="col-span-1 flex gap-1 items-center">
+    <nav className="container bg-[#f1f4f9] p-2">
+      <div className="grid grid-cols-2 lg:grid-cols-6 text-gray-600 px-4 lg:px-6 gap-2 items-center">
+        <Link href="/" className="flex gap-1 items-center">
           <Image
             src="/logo-kalbela.svg"
             alt="Kalbela Logo"
             width={183}
             height={56}
-            className="w-[183px] h-[56px] object-cover"
+            className="w-28 h-9 lg:w-[183px] lg:h-[56px] object-cover"
           />
         </Link>
-        <div className="col-span-4 flex items-center justify-center">
+        <div className="hidden lg:flex col-span-4 items-center justify-center">
           {/* <div className="flex space-x-6 text-lg font-medium items-center">
             <Link
               href="/"
@@ -78,7 +78,7 @@ const Navbar = () => {
             </Link>
           </div> */}
         </div>
-        <div className="flex justify-end items-center">
+        <div className="flex justify-end items-center lg:col-span-1">
           <Image
             src={img1}
             alt="Election Commission Logo"

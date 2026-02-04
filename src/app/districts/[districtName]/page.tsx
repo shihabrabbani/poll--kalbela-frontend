@@ -12,7 +12,6 @@ import logo5 from "@/assets/Images/team-logo.png";
 import VoterInfoCard from "@/components/common/VoterInfoCard";
 import RadialBarChart3 from "@/components/common/RadialBarChart3";
 import toEnglishDigits from "@/assets/lib/toEnglishDigits";
-import MobileNavbar from "@/components/common/MobileNavbar";
 import StickyAd from "@/components/common/StickyAd";
 import { fetchDistrictWiseInfo } from "@/apis";
 import { DistrictElectionData } from "@/types";
@@ -137,7 +136,6 @@ const Page = async ({
   if (!districtInfo) {
     return (
       <div className="lg:mb-14 mb-10">
-        <MobileNavbar />
         <div className="container mx-auto lg:mt-14 mt-10">
           <div className="rounded-2xl bg-white p-6 text-center">
             <p className="text-gray-600">
@@ -208,7 +206,6 @@ const Page = async ({
 
   return (
     <div className="lg:mb-14 mb-10">
-      <MobileNavbar />
       <RoutesHeroSections
         data={{
           title: districtNameDecode,

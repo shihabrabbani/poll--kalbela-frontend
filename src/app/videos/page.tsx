@@ -1,7 +1,6 @@
 import React from "react";
 import Link from "next/link";
 import { IoIosArrowForward } from "react-icons/io";
-import MobileNavbar from "@/components/common/MobileNavbar";
 import VideoCard from "@/components/common/VideoCard";
 import SectionTitle from "@/components/common/SectionTitle";
 import StickyAd from "@/components/common/StickyAd";
@@ -57,7 +56,6 @@ const VideosPage = async () => {
 
   return (
     <section>
-      <MobileNavbar />
       <div className="container mx-auto lg:mt-14 lg:mb-14 mt-10 mb-10">
         <div className="rounded-2xl bg-white">
           <SectionTitle headingLevel="h1">নির্বাচনের ভিডিও</SectionTitle>

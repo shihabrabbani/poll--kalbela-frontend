@@ -1,11 +1,8 @@
 import React from "react";
-import MobileNavbar from "@/components/common/MobileNavbar";
 
 export default function Loading() {
   return (
     <div className="lg:mb-14 mb-10">
-      <MobileNavbar />
-
       <div className="container mx-auto lg:mt-14 lg:mb-14 mt-10 mb-10">
         {/* Candidates Grid Skeleton */}
         <div className="rounded-2xl bg-white">

@@ -8,7 +8,6 @@ import bnp from "@/assets/Images/partyLogo/BNPLogo.webp";
 import japa from "@/assets/Images/partyLogo/JatioyoPartyLogo.webp";
 import other from "@/assets/Images/partyLogo/bullet_point_png.webp";
 import { cn } from "@/assets/lib/cn";
-import MobileNavbar from "@/components/common/MobileNavbar";
 import LineChart from "@/components/common/LineChart";
 import Counter from "@/components/common/Counter";
 import StickyAd from "@/components/common/StickyAd";
@@ -71,7 +70,6 @@ const page = async () => {
 
   return (
     <div className="lg:mb-14 mb-10">
-      <MobileNavbar />
       <h1 className="sr-only">নির্বাচনের ফলাফল</h1>
       {/* <section>
                 <div className='container mx-auto lg:mt-14 mt-10'>

@@ -1,11 +1,8 @@
 import React from "react";
-import MobileNavbar from "@/components/common/MobileNavbar";
 
 const DistrictNamePageSkeleton = () => {
   return (
     <div className="lg:mb-14 mb-10">
-      <MobileNavbar />
-      
       {/* RoutesHeroSection Skeleton */}
       <section>
         <div className="bg-gray-200 w-full h-[250px] relative animate-gray-pulse">

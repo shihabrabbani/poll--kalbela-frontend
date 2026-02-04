@@ -1,5 +1,4 @@
 import React from "react";
-import MobileNavbar from "@/components/common/MobileNavbar";
 import HeavyweightCandidatesPage from "@/components/specific/HeavyweightCandidatesPage";
 import { ElectionSeatResponse } from "@/types";
 import { generatePageMetadata } from "../config/metadata";
@@ -16,7 +15,6 @@ const HeavyWeightPage = async () => {
 
   return (
     <section>
-      <MobileNavbar />
       <HeavyweightCandidatesPage candidatesData={candidatesData} />
     </section>
   );

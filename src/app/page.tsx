@@ -1,12 +1,10 @@
-import HeroPart from "@/components/specific/HeroPart";
-import MobileNavbar from "@/components/common/MobileNavbar";
-import HomeSearchSection from "@/components/specific/HomeSearchSection";
+import HeroWithSearch from "@/components/specific/HeroWithSearch";
 import HomeSeatPoolSection from "@/components/specific/HomeSeatPoolSection";
+import SeatInfo3 from "@/components/specific/SeatInfo";
 import { generatePageMetadata } from "./config/metadata";
 import { domain } from "./config/api/api";
 import { fetchVoteCountingAsCandidates } from "@/apis";
 import type { Seat } from "@/types";
-import SeatInfo3 from "@/components/specific/SeatInfo";
 
 export const metadata = generatePageMetadata(domain);
 
@@ -25,11 +23,7 @@ export default async function Home() {
 
   return (
     <div className="lg:mb-14 mb-10">
-      <MobileNavbar />
-      <HeroPart />
-      <div className="lg:hidden">
-        <HomeSearchSection />
-      </div>
+      <HeroWithSearch />
       <SeatInfo3 className="lg:mt-14 mt-10" />
       {/* <HomeSeatPoolSection seats={seats} error={error} /> */}
     </div>

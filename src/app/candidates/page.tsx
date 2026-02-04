@@ -1,5 +1,4 @@
 import React from "react";
-import MobileNavbar from "@/components/common/MobileNavbar";
 import FinalCandidatesPage from "@/components/specific/FinalCandidatesPage";
 import { fetchVoteCountingAsCandidates } from "@/apis";
 import { generatePageMetadata } from "../config/metadata";
@@ -14,7 +13,6 @@ const CandidatePage = async () => {
 
   return (
     <section>
-      <MobileNavbar />
       <FinalCandidatesPage candidatesData={candidatesData} />
     </section>
   );

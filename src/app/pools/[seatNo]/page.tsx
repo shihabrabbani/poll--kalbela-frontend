@@ -1,4 +1,5 @@
 import PoolView from "./PoolView";
+import HeroWithSearch from "@/components/specific/HeroWithSearch";
 import { fetchSeatWithVotes } from "@/apis";
 import seatList from "@/assets/data/seatList";
 
@@ -35,11 +36,14 @@ export default async function PoolPage({
   const seatName = getSeatName(seatNo);
 
   return (
-    <PoolView
-      seatNo={seatNo}
-      seatName={seatName}
-      initialSeat={initialSeat}
-      initialError={initialError}
-    />
+    <div className="lg:mb-14 mb-10">
+      <HeroWithSearch initialSeatNo={seatNo} initialSeatName={seatName} />
+      <PoolView
+        seatNo={seatNo}
+        seatName={seatName}
+        initialSeat={initialSeat}
+        initialError={initialError}
+      />
+    </div>
   );
 }

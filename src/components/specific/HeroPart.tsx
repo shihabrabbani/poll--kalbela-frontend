@@ -1,16 +1,15 @@
 "use client";
-import React from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import HomeSearchSection from "@/components/specific/HomeSearchSection";
+import React, { ReactNode } from "react";
+import Image from "next/image";
 
-const HeroPart = () => {
-  const pathname = usePathname();
+interface HeroPartProps {
+  /** Rendered inside hero on desktop (lg) only. Used for SearchBox on home/pool. */
+  children?: ReactNode;
+}
 
-  const isActive = (path: string) => {
-    return pathname.startsWith(path);
-  };
+const HERO_IMAGE_URL = "https://kalbela.ideahubbd.com/website-banner.png";
 
+const HeroPart = ({ children }: HeroPartProps) => {
   const mobileMenu = [
     { mainNav: "আসন", link: "/seats" },
     { mainNav: "জেলা", link: "/districts" },
@@ -22,50 +21,42 @@ const HeroPart = () => {
   return (
     <section>
       <div
-        style={{
-          backgroundImage: `url(https://kalbela.ideahubbd.com/website-banner.png)`,
-        }}
-        className=" bg-cover w-full bg-center bg-no-repeat h-[250px] lg:h-[450px]"
+        className={`relative w-full h-[250px] ${
+          children
+            ? "lg:min-h-[450px] lg:pb-0 lg:overflow-visible"
+            : "lg:h-[450px]"
+        }`}
       >
-        <div className="bg-black bg-opacity-50 backdrop-blur-sm text-white py-2 justify-center items-center h-full flex flex-col">
-          {/* Mobile Navigation Items - commented out for now */}
-          {/* <div className="block lg:hidden absolute top-0 left-0 right-0 w-full">
-            <div className="flex flex-wrap justify-center gap-2 px-4">
-              {mobileMenu.map((item, index) => (
-                <Link
-                  key={index}
-                  href={item.link}
-                  className={`text-sm font-medium px-3 py-3 rounded transition-colors ${
-                    isActive(item.link) ? "text-blue-600" : "text-white"
-                  }`}
-                >
-                  {item.mainNav}
-                </Link>
-              ))}
+        <Image
+          src={HERO_IMAGE_URL}
+          alt="কালবেলা হিরো ব্যানার"
+          fill
+          className="object-cover object-center"
+          priority
+          sizes="100vw"
+        />
+        <div
+          className="absolute inset-0 bg-black/50 backdrop-blur-sm text-white py-2 flex flex-col items-center w-full min-h-full z-[1]"
+          aria-hidden="false"
+        >
+          <div
+            className={`flex flex-col flex-1 w-full items-center ${
+              children ? "pt-6 pb-8 justify-center" : "justify-center"
+            }`}
+          >
+            <div className="flex flex-col justify-center items-center text-center px-4">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-white font-bold tracking-tight max-w-2xl">
+                ত্রয়োদশ জাতীয় সংসদ নির্বাচন ২০২৬
+              </h1>
+              <p className="mt-4 text-base sm:text-lg md:text-xl text-white/95 font-medium tracking-wide">
+                কালবেলা অনলাইন জরিপ
+              </p>
             </div>
-          </div> */}
-          <div className="flex flex-col justify-center items-center text-center px-4">
-            <h1
-              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-white font-bold tracking-tight max-w-2xl"
-              // style={{
-              //   textShadow:
-              //     "-1px -1px 2.5px rgba(127,29,29,0.85), 1px -1px 2.5px rgba(127,29,29,0.85), -1px 1px 2.5px rgba(127,29,29,0.85), 1px 1px 2.5px rgba(127,29,29,0.85), 0 -1px 2.5px rgba(127,29,29,0.85), 0 1px 2.5px rgba(127,29,29,0.85), -1px 0 2.5px rgba(127,29,29,0.85), 1px 0 2.5px rgba(127,29,29,0.85), 0 0 16px rgba(211,28,33,0.22), 0 0 32px rgba(211,28,33,0.12), 0 2px 4px rgba(0,0,0,0.4), 0 4px 12px rgba(0,0,0,0.28), 0 8px 24px rgba(0,0,0,0.16)",
-              // }}
-            >
-              ত্রয়োদশ জাতীয় সংসদ নির্বাচন ২০২৬
-            </h1>
-            <p
-              className="mt-4 text-base sm:text-lg md:text-xl text-white/95 font-medium tracking-wide"
-              // style={{
-              //   textShadow:
-              //     "0 1px 2px rgba(0,0,0,0.4), 0 2px 8px rgba(0,0,0,0.25), 0 0 20px rgba(211,28,33,0.08)",
-              // }}
-            >
-              কালবেলা অনলাইন জরিপ
-            </p>
-          </div>
-          <div className="hidden lg:block container mx-auto w-full mt-8 px-4">
-            <HomeSearchSection />
+            {children ? (
+              <div className="hidden lg:block container mx-auto w-full mt-8 px-4">
+                <div className="w-full">{children}</div>
+              </div>
+            ) : null}
           </div>
         </div>
       </div>
