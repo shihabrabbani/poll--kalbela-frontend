@@ -1,26 +1,23 @@
+import { Suspense } from "react";
 import HeroWithSearch from "@/components/specific/HeroWithSearch";
-import HomeSeatPoolSection from "@/components/specific/HomeSeatPoolSection";
 import SeatInfo3 from "@/components/specific/SeatInfo";
+import HomePoolViewSection from "@/components/specific/HomePoolViewSection";
+import SeatCandidatesResultSkeleton from "@/components/specific/SeatCandidatesResultSkeleton";
 import { generatePageMetadata } from "./config/metadata";
 import { domain } from "./config/api/api";
-import { fetchVoteCountingAsCandidates } from "@/apis";
-import type { Seat } from "@/types";
 
 export const metadata = generatePageMetadata(domain);
 
-export default async function Home() {
-  let seats: Seat[] = [];
-  let error: string | null = null;
-  try {
-    const res = await fetchVoteCountingAsCandidates();
-    const data = res?.data;
-    if (Array.isArray(data)) {
-      seats = [...data].sort((a, b) => a.seatNumber - b.seatNumber);
-    }
-  } catch (err) {
-    error = "তথ্য লোড হয়নি।";
-  }
+function PoolViewSectionFallback() {
+  return (
+    <div className="space-y-10 mt-10">
+      <SeatCandidatesResultSkeleton />
+      <SeatCandidatesResultSkeleton />
+    </div>
+  );
+}
 
+export default function Home() {
   return (
     <div className="lg:mb-14 mb-10">
       <div className="relative z-10">
@@ -28,7 +25,9 @@ export default async function Home() {
       </div>
       <div className="relative z-0">
         <SeatInfo3 className="lg:mt-14 mt-10" />
-        {/* <HomeSeatPoolSection seats={seats} error={error} /> */}
+        <Suspense fallback={<PoolViewSectionFallback />}>
+          <HomePoolViewSection />
+        </Suspense>
       </div>
     </div>
   );
