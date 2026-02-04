@@ -105,6 +105,7 @@ export default function SeatCandidatesResult({
                   onMouseDown={(e) => e.stopPropagation()}
                 >
                   <SocialShare
+                    url={`/pools/seat-${seatNo}`}
                     title={"ত্রয়োদশ জাতীয় সংসদ নির্বাচন ২০২৬"}
                     iconSize={32}
                   />

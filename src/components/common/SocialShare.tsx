@@ -40,11 +40,15 @@ export default function SocialShare({
   const copyTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    if (typeof window !== "undefined" && !url) {
+    if (typeof window === "undefined") return;
+    if (!url) {
       setShareUrl(window.location.href);
-    } else if (url) {
-      setShareUrl(url);
+      return;
     }
+    const absoluteUrl = url.startsWith("http")
+      ? url
+      : `${window.location.origin}${url.startsWith("/") ? "" : "/"}${url}`;
+    setShareUrl(absoluteUrl);
   }, [url]);
 
   useEffect(() => {
