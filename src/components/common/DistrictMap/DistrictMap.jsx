@@ -19,7 +19,7 @@ function DistrictMap({ seatNo, districtNo, districtName }) {
     : null;
 
   return (
-    <div className="flex flex-col justify-center items-center w-full h-full">
+    <div className="flex flex-col justify-center items-center w-full h-full border">
       <svg
         version="1.1"
         id="Layer_1"
@@ -191,9 +191,6 @@ function DistrictMap({ seatNo, districtNo, districtName }) {
           </>
         )}
       </svg>
-      <div className="py-2">
-        <p className="text-center text-lg font-bold">{districtName} জেলা</p>{" "}
-      </div>
     </div>
   );
 }
