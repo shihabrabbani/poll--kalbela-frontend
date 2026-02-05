@@ -5,10 +5,6 @@ import seatList from "@/assets/data/seatList";
 import SectionTitle from "@/components/common/SectionTitle";
 import VoterInfoCard from "@/components/common/VoterInfoCard";
 import toEnglishDigits from "@/assets/lib/toEnglishDigits";
-import logo1 from "@/assets/Images/totalvote-logo.png";
-import logo2 from "@/assets/Images/man-logo.png";
-import logo3 from "@/assets/Images/Female-logo.png";
-import logo4 from "@/assets/Images/transgender-logo.png";
 import DistrictMap from "@/components/common/DistrictMap/DistrictMap";
 import mapData from "@/assets/data/map/mapData";
 import districtListData from "@/assets/data/districtList";
@@ -79,27 +75,35 @@ export default async function PoolPage({
     ? [
         {
           title: "মোট ভোটার",
-          logo: logo1,
+          logo: "https://kalbela.ideahubbd.com/pepelo.png",
           total: Number(toEnglishDigits(seatInfoData?.totalVoter)),
-          percentage: "",
+          iconBg: "#D31C21",
+          textBg: "#FBE8E9",
+          logoRaw: true,
         },
         {
-          title: "পুরুষ",
-          logo: logo2,
+          title: "পুরুষ ভোটার",
+          logo: "https://kalbela.ideahubbd.com/man_avater.png",
           total: Number(toEnglishDigits(seatInfoData?.maleVoter)),
-          percentage: "",
+          iconBg: "#58AADB",
+          textBg: "#DEEEF8",
+          logoRaw: true,
         },
         {
-          title: "মহিলা",
-          logo: logo3,
+          title: "নারী ভোটার",
+          logo: "https://kalbela.ideahubbd.com/wo_man.png",
           total: Number(toEnglishDigits(seatInfoData?.femaleVoter)),
-          percentage: "",
+          iconBg: "#6456D4",
+          textBg: "#E0DDF6",
+          logoRaw: true,
         },
         {
-          title: "অন্যান্য",
-          logo: logo4,
+          title: "অন্যান্য ভোটার",
+          logo: "https://kalbela.ideahubbd.com/icon.png",
           total: Number(toEnglishDigits(seatInfoData?.thirdGenderVoter)),
-          percentage: "",
+          iconBg: "#497AFC",
+          textBg: "#DBE4FE",
+          logoRaw: true,
         },
       ]
     : [];
@@ -122,18 +126,15 @@ export default async function PoolPage({
           <div className="container mx-auto lg:mt-14 mt-10">
             <div className="rounded-2xl bg-white">
               <SectionTitle>আসনের সংক্ষিপ্ত তথ্য</SectionTitle>
-              <div className="grid grid-cols-1 lg:grid-cols-6 gap-4 lg:gap-6 lg:px-6 px-4 pb-4 lg:pb-6">
-                <div className="lg:col-span-4 grid grid-cols-2 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 lg:grid-cols-6 gap-4 lg:gap-6 lg:px-6 px-4 pb-4 lg:pb-6 items-start">
+                <div className="lg:col-span-4 grid grid-cols-1 sm:grid-cols-2 gap-4 content-start">
                   {voterData.map((data, i) => (
-                    <div
-                      key={i}
-                      className="text-gray-700 rounded-lg bg-PurpleLight border border-PurpleDark"
-                    >
+                    <div key={i} className="min-w-0">
                       <VoterInfoCard data={data} />
                     </div>
                   ))}
                 </div>
-                <div className="lg:col-span-2 min-h-[280px] lg:min-h-[340px] w-full">
+                <div className="lg:col-span-2 w-full flex flex-col justify-center items-center">
                   <DistrictMap
                     seatNo={seatNo}
                     districtNo={districtInfo?.districtNo ?? ""}
