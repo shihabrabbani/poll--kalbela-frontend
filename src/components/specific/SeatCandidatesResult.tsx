@@ -232,7 +232,7 @@ export default function SeatCandidatesResult({
                   </div>
 
                   {/* Main content: name, constituency, party, progress bar */}
-                  <div className="relative z-10 flex-1 min-w-0 space-y-1 pr-16 sm:pr-20">
+                  <div className="relative z-10 flex-1 min-w-0 space-y-1">
                     <h3 className="text-base sm:text-lg font-bold text-gray-800">
                       {c.candidateName}
                     </h3>
@@ -273,14 +273,14 @@ export default function SeatCandidatesResult({
                     </div>
                   </div>
 
-                  {/* Party symbol – top right (circular), slightly bigger */}
-                  <div className="absolute top-4 right-4 z-10 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-white border-2 border-gray-200 flex items-center justify-center overflow-hidden shrink-0 pointer-events-none">
+                  {/* Party symbol – in flex flow (circular) */}
+                  <div className="relative z-10 w-16 h-16 sm:w-20 sm:h-20 shrink-0 rounded-full bg-white border-2 border-gray-200 flex items-center justify-center overflow-hidden pointer-events-none self-start">
                     {c.partyLogo ? (
                       <Image
                         className="w-full h-full object-contain p-1"
                         src={c.partyLogo}
-                        width={56}
-                        height={56}
+                        width={80}
+                        height={80}
                         alt=""
                         unoptimized={true}
                       />
