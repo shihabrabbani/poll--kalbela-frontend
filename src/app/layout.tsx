@@ -26,17 +26,16 @@ export default function RootLayout({
   return (
     <html lang="bn-BD">
       <Script
-        src="https://www.googletagmanager.com/gtag/js?id=G-52RLPSEGJ1"
+        src="https://www.googletagmanager.com/gtag/js?id=G-EN0C978YX0"
         strategy="afterInteractive"
       />
       <Script id="google-analytics" strategy="afterInteractive">
         {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-EN0C978YX0');
-            gtag('config', 'G-MFYF01196B');
-          `}
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-EN0C978YX0');
+        `}
       </Script>
       <body className={`bg-[#f1f4f9]`}>
         <Navbar />
