@@ -6,7 +6,7 @@ export const baseMetadata = {
   title: "নির্বাচনের খবর ২০২৬ | Election News 2026 Bangladesh | কালবেলা",
   description:
     "নির্বাচন ২০২৬ ঘিরে দেশের সর্বশেষ ও নির্ভরযোগ্য খবর পড়ুন কালবেলায়। আসনভিত্তিক ও জেলাভিত্তিক নির্বাচন সংবাদ, প্রার্থীর তালিকা, ভোটের আপডেট, বিশ্লেষণ, ছবি ও ভিডিও প্রতিবেদন এক জায়গায়।",
-  image: "https://kalbela.ideahubbd.com/share_image.jpeg",
+  image: "https://kalbela.ideahubbd.com/EC-02-(1).jpg",
   twitterSite: "@kalbeladigital",
   twitterTitle: "কালবেলা",
   siteName: "Kalbela Election",
