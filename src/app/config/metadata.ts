@@ -3,9 +3,26 @@ import { domain } from "./api/api";
 
 // Single source of truth for metadata
 export const baseMetadata = {
-  title: "নির্বাচনের খবর ২০২৬ | Election News 2026 Bangladesh | কালবেলা",
+  title:
+    "কালবেলা নির্বাচনী জরিপ ২০২৬ | আপনার পছন্দের প্রার্থীকে সমর্থন করুন",
   description:
-    "নির্বাচন ২০২৬ ঘিরে দেশের সর্বশেষ ও নির্ভরযোগ্য খবর পড়ুন কালবেলায়। আসনভিত্তিক ও জেলাভিত্তিক নির্বাচন সংবাদ, প্রার্থীর তালিকা, ভোটের আপডেট, বিশ্লেষণ, ছবি ও ভিডিও প্রতিবেদন এক জায়গায়।",
+    "কালবেলার আয়োজনে ত্রয়োদশ জাতীয় সংসদ নির্বাচন ২০২৬ উপলক্ষে পাঠকদের আগ্রহ ও পছন্দের প্রতিফলন তুলে ধরতে এই নির্বাচনী জরিপ। আপনার পছন্দের প্রার্থীকে সমর্থন করতে ক্লিক করুন।",
+  keywords: [
+    "কালবেলা নির্বাচনী জরিপ",
+    "কালবেলা জরিপ ২০২৬",
+    "নির্বাচনী জরিপ ২০২৬",
+    "ত্রয়োদশ জাতীয় সংসদ নির্বাচন ২০২৬",
+    "নির্বাচন ২০২৬",
+    "জাতীয় সংসদ নির্বাচন ২০২৬",
+    "আপনার পছন্দের প্রার্থী",
+    "পছন্দের প্রার্থী জরিপ",
+    "অনলাইন নির্বাচন জরিপ",
+    "জনমত জরিপ বাংলাদেশ",
+    "পাঠক মতামত জরিপ",
+    "নির্বাচন জরিপ বাংলাদেশ",
+    "Kalbela Election Poll 2026",
+    "Bangladesh Election Survey 2026",
+  ],
   image: "https://kalbela.ideahubbd.com/EC-02-(1).jpg",
   twitterSite: "@kalbeladigital",
   twitterTitle: "কালবেলা",
@@ -22,6 +39,7 @@ export function generatePageMetadata(url: string): Metadata {
   return {
     title: baseMetadata.title,
     description: baseMetadata.description,
+    keywords: baseMetadata.keywords,
     icons: {
       icon: baseMetadata.icon,
     },
