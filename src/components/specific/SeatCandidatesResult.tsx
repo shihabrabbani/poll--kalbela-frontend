@@ -252,10 +252,7 @@ export default function SeatCandidatesResult({
                     <div className="pt-2 space-y-1 min-h-[52px]">
                       {votedCandidateIdToday != null ? (
                         <>
-                          <div className="flex justify-between items-center">
-                            <span className="text-xs font-medium text-gray-600">
-                              প্রাপ্ত ভোট
-                            </span>
+                          <div className="flex justify-end items-center">
                             <span className="text-sm font-semibold text-gray-800">
                               {typeof c.votePercentage === "number"
                                 ? `${toBengaliDigits(
