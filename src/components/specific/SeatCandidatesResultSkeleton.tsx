@@ -3,45 +3,43 @@ import React from "react";
 const SeatCandidatesResultSkeleton = () => {
   return (
     <section className="container mx-auto mt-2 px-4 lg:mt-4">
-      <div className="rounded-2xl bg-white border border-gray-200 overflow-hidden">
-        {/* Section title – matches SectionTitle (lg:px-6 px-4 py-4) */}
-        <div className="lg:px-6 px-4 py-4">
-          <div className="h-6 w-64 sm:w-80 bg-gray-200 rounded animate-gray-pulse" />
+      <div className="rounded-2xl bg-white border border-gray-200 overflow-visible">
+        {/* Section title – matches SectionTitle with seat name • আসন নং + three-dot action */}
+        <div className="lg:px-6 px-4 py-4 flex gap-2 items-center justify-between flex-wrap">
+          <div className="flex items-center gap-2 flex-wrap">
+            <div className="h-6 w-40 sm:w-52 bg-gray-200 rounded animate-gray-pulse" />
+            <span className="text-gray-400 font-light">•</span>
+            <div className="h-6 w-24 bg-gray-200 rounded animate-gray-pulse" />
+          </div>
+          <div className="h-9 w-9 rounded-full bg-gray-200 animate-gray-pulse shrink-0" />
         </div>
-        {/* Candidate cards grid – matches SeatCandidatesResult layout */}
-        <div className="grid grid-cols-1 gap-6 px-4 pb-6">
+        {/* Candidate cards – matches SeatCandidatesResult flex card layout */}
+        <div className="grid grid-cols-1 gap-4 px-4 pb-6">
           {[1, 2, 3].map((i) => (
             <div
               key={i}
-              className="grid grid-cols-1 sm:grid-cols-[auto_auto_1fr_180px_auto] lg:grid-cols-[auto_auto_1fr_220px_auto] gap-4 rounded-xl p-4 sm:p-5 items-center border border-gray-200 bg-gray-50/50"
+              className="flex flex-wrap items-stretch gap-4 rounded-xl border border-gray-200 bg-white p-4 sm:p-5"
             >
-              {/* Col 1: image – matches candidate image */}
-              <div className="w-full sm:w-28 lg:w-36 aspect-square sm:aspect-auto sm:h-[120px] bg-gray-100 rounded-lg animate-gray-pulse justify-self-center sm:justify-self-start" />
-              {/* Col 2: seat line (text-xs), name (text-lg), party/symbol (text-sm) */}
-              <div className="space-y-1 min-w-0">
-                <div className="h-3 w-28 bg-gray-200 rounded animate-gray-pulse" />
-                <div className="h-6 w-36 bg-gray-200 rounded animate-gray-pulse" />
-                <div className="h-4 w-32 bg-gray-200 rounded animate-gray-pulse" />
-                <div className="h-4 w-24 bg-gray-200 rounded animate-gray-pulse" />
+              {/* Radio indicator */}
+              <div className="flex items-center shrink-0">
+                <div className="h-5 w-5 shrink-0 rounded-full border-2 border-gray-300 bg-transparent" />
               </div>
-              {/* Col 3: আপনার ভোট badge column – empty in skeleton */}
-              <div className="flex items-center justify-start sm:justify-center min-w-0" />
-              {/* Col 4: result – symbol left, ফলাফল + count/% + progress bar right */}
-              <div className="flex items-stretch gap-3 rounded-xl border-2 border-PurpleDark/20 bg-PurpleLight/50 p-4 sm:p-5 min-w-0">
-                <div className="w-12 h-12 shrink-0 rounded-xl bg-white border-2 border-PurpleDark/30 animate-gray-pulse self-center" />
-                <div className="flex-1 min-w-0 space-y-2">
-                  <div className="h-3 w-14 bg-gray-200 rounded animate-gray-pulse" />
-                  <div className="flex justify-between gap-2">
-                    <div className="h-4 w-14 bg-gray-200 rounded animate-gray-pulse" />
+              {/* Circular candidate photo */}
+              <div className="w-20 h-20 sm:w-24 sm:h-24 shrink-0 rounded-full bg-gray-100 border-2 border-gray-200 animate-gray-pulse" />
+              {/* Main content: name, constituency, party, progress bar area */}
+              <div className="flex-1 min-w-0 space-y-1">
+                <div className="h-5 w-36 sm:w-44 bg-gray-200 rounded animate-gray-pulse" />
+                <div className="h-4 w-28 bg-gray-200 rounded animate-gray-pulse" />
+                <div className="h-4 w-32 bg-gray-200 rounded animate-gray-pulse" />
+                <div className="pt-2 space-y-1 min-h-[52px]">
+                  <div className="flex justify-end">
                     <div className="h-4 w-10 bg-gray-200 rounded animate-gray-pulse" />
                   </div>
-                  <div className="h-3 w-full bg-gray-200 rounded-full overflow-hidden animate-gray-pulse" />
+                  <div className="h-2.5 w-full bg-gray-200 rounded-full overflow-hidden animate-gray-pulse" />
                 </div>
               </div>
-              {/* Col 5: vote button */}
-              <div className="flex justify-center sm:justify-end">
-                <div className="h-10 w-24 bg-PurpleDark/20 rounded-lg animate-gray-pulse" />
-              </div>
+              {/* Party symbol – circular */}
+              <div className="w-16 h-16 sm:w-20 sm:h-20 shrink-0 rounded-full bg-white border-2 border-gray-200 animate-gray-pulse self-start" />
             </div>
           ))}
         </div>

@@ -1,10 +1,21 @@
 import React from "react";
 
-const SearchBoxSkeleton = () => {
+interface SearchBoxSkeletonProps {
+  /** When true, use transparent styling to match SearchBox inside hero (desktop) */
+  inHero?: boolean;
+}
+
+const SearchBoxSkeleton = ({ inHero = false }: SearchBoxSkeletonProps) => {
   return (
     <section className="mt-6 lg:mt-8">
       <div className="container mx-auto">
-        <div className="bg-white rounded-2xl border border-gray-300 py-8 p-4">
+        <div
+          className={`rounded-2xl py-8 p-4 ${
+            inHero
+              ? "bg-white/65 backdrop-blur-sm border border-white/30"
+              : "bg-white border border-gray-300"
+          }`}
+        >
           <div className="h-6 lg:h-7 w-full max-w-md mb-4 lg:mb-5 bg-gray-200 rounded animate-gray-pulse" />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
             <div className="sm:col-span-1">

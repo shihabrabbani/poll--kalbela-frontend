@@ -8,10 +8,9 @@ export default function HomePageSkeleton() {
   return (
     <div className="lg:mb-14 mb-10">
       <div className="relative z-10">
-        <HeroPartSkeleton />
-        <div className="hidden lg:block">
-          <SearchBoxSkeleton />
-        </div>
+        <HeroPartSkeleton>
+          <SearchBoxSkeleton inHero />
+        </HeroPartSkeleton>
       </div>
       <div className="relative z-0">
         <div className="lg:hidden">
